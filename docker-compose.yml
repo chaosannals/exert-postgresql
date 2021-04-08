@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+    # Postgresql 服务器
+    postgresql-server:
+        image: postgres:13.2
+        container_name: exert-postgresql-server
+        restart: always
+        volumes:
+            - ./docker/data:/var/lib/postgresql/data/pgdata
+        ports:
+            - 5432:5432
+        environment:
+            - POSTGRES_PASSWORD=123456
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        networks:
+            - exert-postgresql-net
+
+networks:
+    exert-postgresql-net:
+        name: exert-postgresql-net
+        driver: bridge
