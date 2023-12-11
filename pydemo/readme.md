@@ -1,10 +1,11 @@
 # 
 
 ```bash
+# 客户端
 pip install -i https://mirrors.aliyun.com/pypi/simple/ --no-cache-dir open-text-embeddings openai 
-
 ```
 
+服务器
 
 intfloat/e5-large-v2 这是个英文模型，所有框架都可复用， 只要配置使用自己找的中文模型即可。
 

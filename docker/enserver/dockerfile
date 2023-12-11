@@ -1,0 +1,9 @@
+FROM python:3.11.7
+
+RUN pwd && \
+    pip install -i https://mirrors.aliyun.com/pypi/simple/  --no-cache-dir open-text-embeddings[server] && \
+    pip install -i https://mirrors.aliyun.com/pypi/simple/  InstructorEmbedding sentence_transformers huggingface-hub && \
+    export HF_ENDPOINT=https://hf-mirror.com && \
+    huggingface-cli download --resume-download intfloat/e5-large-v2 --local-dir ~/cache/huggingface/hub
+
+CMD ["python" "-m" "open.text.embeddings.server"]

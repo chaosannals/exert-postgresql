@@ -16,7 +16,16 @@ services:
         networks:
             - exert-postgresql-net
 
-    # 向量类型扩展
+    # 向量类型扩展 1
+    # https://github.com/tensorchord/pgvecto.rs
+    # 这个需要执行 
+    # 1. ALTER SYSTEM SET shared_preload_libraries = "vectors.so"
+    # 2. 然后 重启
+    # 3. DROP EXTENSION IF EXISTS vectors;
+    # 4. CREATE EXTENSION vectors;
+    # 启用插件。
+    # 直接执行 SQL 可以创建 vector 了。
+    # pgadmin 如果在没有启用插件前连接需要 pgadmin重启。
     pgvectors-server:
         image: tensorchord/pgvecto-rs:pg16-latest
         container_name: exert-pgvectors-server
@@ -29,6 +38,37 @@ services:
             - POSTGRES_PASSWORD=mysecretpassword
         networks:
             - exert-postgresql-net
+
+    # 向量类型扩展 2
+    # https://github.com/pgvector/pgvector
+    # 这个需要执行 CREATE EXTENSION IF NOT EXISTS vector 才有类型 vector
+    pgvector-server-2:
+        image: ankane/pgvector
+        container_name: exert-pgvector-server-2
+        restart: always
+        environment:
+            - POSTGRES_PASSWORD=123456
+        ports:
+            - 5444:5432
+        networks:
+            - exert-postgresql-net
+
+    # 英文向量服务
+    # dockerfile 下载库有问题，手动部署可以过。
+    # en-server:
+    #     build:
+    #         dockerfile: dockerfile
+    #         context: ./docker/enserver
+    #     container_name: exert-en-server
+    #     restart: always
+    #     ports:
+    #         - 8000:8000
+    #     environment:
+    #         - MODEL=intfloat/e5-large-v2
+    #         - DEVICE=cpu
+    #     networks:
+    #         - exert-postgresql-net
+
 
 networks:
     exert-postgresql-net:
