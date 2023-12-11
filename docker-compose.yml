@@ -16,6 +16,20 @@ services:
         networks:
             - exert-postgresql-net
 
+    # 向量类型扩展
+    pgvectors-server:
+        image: tensorchord/pgvecto-rs:pg16-latest
+        container_name: exert-pgvectors-server
+        restart: always
+        ports:
+            - 5434:5432
+        environment:
+            # 这个密码是默认账号 postgres
+            # 默认链接数据库名也叫 postgres
+            - POSTGRES_PASSWORD=mysecretpassword
+        networks:
+            - exert-postgresql-net
+
 networks:
     exert-postgresql-net:
         name: exert-postgresql-net
